@@ -6,6 +6,7 @@ const { Events } = require('../util/Constants');
 const Util = require('../util/Util');
 const DataResolver = require('../util/DataResolver');
 const Guild = require('./Guild');
+const { deprecate } = require('util');
 
 /**
  * Represents the logged in client's Discord user.
@@ -313,6 +314,7 @@ class ClientUser extends User {
    * Creates a Group DM.
    * @param {GroupDMRecipientOptions[]} recipients The recipients
    * @returns {Promise<GroupDMChannel>}
+   * @deprecated
    */
   createGroupDM(recipients) {
     const data = this.bot ? {
@@ -326,5 +328,17 @@ class ClientUser extends User {
       .then(res => this.client.channels.create(res));
   }
 }
+
+/**
+ * Sets the game the client user is playing.
+ * @param {?string} game Game being played
+ * @param {string} [streamingURL] Twitch stream URL
+ * @returns {Promise<ClientUser>}
+ */
+function setGame(game, streamingURL) {
+  return this.setActivity(game, { url: streamingURL, type: streamingURL ? 1 : 0 });
+}
+
+ClientUser.prototype.setGame = deprecate(setGame, 'ClientUser#setGame: use ClientUser#setActivity instead');
 
 module.exports = ClientUser;
