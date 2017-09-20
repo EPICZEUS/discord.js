@@ -314,7 +314,6 @@ class ClientUser extends User {
    * Creates a Group DM.
    * @param {GroupDMRecipientOptions[]} recipients The recipients
    * @returns {Promise<GroupDMChannel>}
-   * @deprecated
    */
   createGroupDM(recipients) {
     const data = this.bot ? {
@@ -334,6 +333,7 @@ class ClientUser extends User {
  * @param {?string} game Game being played
  * @param {string} [streamingURL] Twitch stream URL
  * @returns {Promise<ClientUser>}
+ * @deprecated
  */
 function setGame(game, streamingURL) {
   return this.setActivity(game, { url: streamingURL, type: streamingURL ? 1 : 0 });
